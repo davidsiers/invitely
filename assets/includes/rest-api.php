@@ -5,33 +5,67 @@
  *
  */
 
-
     add_action( 'rest_api_init', function () {
 
-        register_rest_route( 'invitely/v1', '/invite/(?P<id>\d+)', array(
-          'methods' => 'GET',
-          'callback' => 'get_invites_by_id',
+        register_rest_route( 'invitely/v1', '/person/(?P<id>\d+)', array(
+            'methods' => 'GET',
+            'callback' => 'get_user',
+          ) );
+
+        register_rest_route( 'invitely/v1', '/mail', array(
+            'methods' => 'GET',
+            'callback' => 'send_mail',
         ) );
-    });
+    }); 
 
-    function get_invites_by_id($request) {
-        $post = get_post($request['id']);
-        $events = wp_get_object_terms( $request['id'], 'invite_event' );
-        $event_id = $events[0]->term_id;
-        $custom_fields = get_field_objects($request['id']);
-        $event_custom_fields = get_field_objects('term_'.$event_id);
-        $invite = array($post, $custom_fields, $events, $event_custom_fields);
+    include(invitely_get_path('assets/includes/rest-routes/rest-sermons.php'));
+    include(invitely_get_path('assets/includes/rest-routes/rest-contact-form-7.php'));
+    include(invitely_get_path('assets/includes/rest-routes/rest-invites.php'));
+    include(invitely_get_path('assets/includes/rest-routes/rest-events.php'));
+    include(invitely_get_path('assets/includes/rest-routes/rest-social-media-feed.php')); 
 
-        if (empty($post)) {
-        return new WP_Error( 'empty_invite', 'there is no invite with that ID', array('status' => 404) );
+    // https://tucsonbaptist.shelbynextchms.com/api/user/login?return_perms=true
 
+    function get_user($request) {
+        $shelbyCHMS_API = "https://tucsonbaptist.shelbynextchms.com/api/";
+        $SessionId = "3255431cf0d94e8267b628ba0f842479";
+
+        $args = array(
+            'headers' => array(
+              'X-SessionId' => $SessionId
+            )
+        );
+
+        $person_id = $request['id'];
+        $person_data = json_decode(wp_remote_retrieve_body(wp_remote_get( $shelbyCHMS_API.'people/'.$person_id, $args )));
+        // $person_data = $shelbyCHMS_API.'people/'.$person_id;
+
+        if (empty($person_id)) {
+        return new WP_Error( 'empty_person_id', 'there is no person with that ID', array('status' => 404) );
         }
 
-        $response = new WP_REST_Response($invite);
+        $response = new WP_REST_Response($person_data);
         $response->set_status(200);
         return $response;
-    };
 
+    }
+
+    function send_mail() {
+        $to = 'david@tucsonbaptist.com';
+        $subject = 'The subject';
+        $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <info@tucsonbaptist.com>');
+
+        ob_start();
+
+        include(invitely_get_path('assets/templates/email.php'));
+    
+        $body = ob_get_contents();
+       
+        ob_end_clean();
+
+        wp_mail( $to, $subject, $body, $headers );
+    }
+    
 
 // function add_cors_http_header(){
 // 	header("Access-Control-Allow-Origin: *");
