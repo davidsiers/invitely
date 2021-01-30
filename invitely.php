@@ -15,7 +15,7 @@ invitely_include('assets/includes/shortcode.php');
 invitely_include('assets/includes/assets.php');
 invitely_include('assets/includes/rest-api.php');
 
-//Only to done on plugin activation to rewrite permalinks
+//Only to be done on plugin activation to rewrite permalinks
 register_activation_hook( __FILE__, 'invitely_rewrite_flush' );
 function invitely_rewrite_flush() {
     invitely_plugin_init();
