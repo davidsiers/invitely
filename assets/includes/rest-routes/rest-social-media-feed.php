@@ -41,14 +41,16 @@ function aggregate_feeds() {
         $sermon->content_type = 'sermon';
         $post_date = date_create($sermon->post_date_gmt);
         $sermon->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
-        $sermon->post_featured_image = get_the_post_thumbnail_url( $sermon->ID, 'full' );;
+        $sermon->post_featured_image = get_the_post_thumbnail_url( $sermon->ID, 'full' );
+        $sermon->link = get_permalink($sermon->ID);
         array_push($feed_list, $sermon);
     };
     foreach($posts as $post) { 
         $post->content_type = 'post';
         $post_date = date_create($post->post_date_gmt);
         $post->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
-        $post->post_featured_image = get_the_post_thumbnail_url( $post->ID, 'full' );;
+        $post->post_featured_image = get_the_post_thumbnail_url( $post->ID, 'full' );
+        $post->link = get_permalink($post->ID);
         array_push($feed_list, $post);
     };
     foreach($instagram_posts as $instagram_post) { 
