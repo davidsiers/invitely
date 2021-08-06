@@ -20,7 +20,7 @@ invitely_include('assets/includes/push-notifications.php');
 //Only to be done on plugin activation to rewrite permalinks
 register_activation_hook( __FILE__, 'invitely_rewrite_flush' );
 function invitely_rewrite_flush() {
-    invitely_plugin_init();
+    // invitely_plugin_init();
     flush_rewrite_rules();
 }
 

@@ -51,6 +51,29 @@ foreach($sermons as $sermon) {
     $sermon->tag = get_the_terms($sermon->ID, 'ctc_sermon_tag');
     $post_date = date_create($sermon->post_date);
     $sermon->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
+
+    // get custom fields from Series - Advanced Custom Fields
+    if ($sermon->series) {
+      $series = $sermon->series;
+      foreach($series as $item) {
+        $fields = get_fields('term_'.$item->term_id);
+          foreach( $fields as $name => $value ) {
+            $item->$name = $value;
+          }
+      }
+    }
+
+    // get custom fields from Speaker - Advanced Custom Fields
+    if ($sermon->speaker) {
+      $speakers = $sermon->speaker;
+      foreach($speakers as $speaker) {
+        $fields = get_fields('term_'.$speaker->term_id);
+          foreach( $fields as $name => $value ) {
+            $speaker->$name = $value;
+          }
+      }
+    }
+
     $i++;
 }
 
@@ -75,6 +98,28 @@ function get_sermon($request) {
     $sermon->tag = get_the_terms($sermon->ID, 'ctc_sermon_tag');
     $post_date = date_create($sermon->post_date);
     $sermon->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
+
+    // get custom fields from Series - Advanced Custom Fields
+    if ($sermon->series) {
+      $series = $sermon->series;
+      foreach($series as $item) {
+        $fields = get_fields('term_'.$item->term_id);
+          foreach( $fields as $name => $value ) {
+            $item->$name = $value;
+          }
+      }
+    }
+
+    // get custom fields from Speaker - Advanced Custom Fields
+    if ($sermon->speaker) {
+      $speakers = $sermon->speaker;
+      foreach($speakers as $speaker) {
+        $fields = get_fields('term_'.$speaker->term_id);
+          foreach( $fields as $name => $value ) {
+            $speaker->$name = $value;
+          }
+      }
+    }
 
     if (empty($sermon)) {
     return new WP_Error( 'empty_sermon', 'there is no sermon with ID '.$request['id'], array('status' => 404) );
@@ -113,6 +158,29 @@ function get_sermons_by_series($request) {
         $sermon->tag = get_the_terms($sermon->ID, 'ctc_sermon_tag');
         $post_date = date_create($sermon->post_date);
         $sermon->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
+
+        // get custom fields from Series - Advanced Custom Fields
+        if ($sermon->series) {
+          $series = $sermon->series;
+          foreach($series as $item) {
+            $fields = get_fields('term_'.$item->term_id);
+              foreach( $fields as $name => $value ) {
+                $item->$name = $value;
+              }
+          }
+        }
+
+        // get custom fields from Speaker - Advanced Custom Fields
+        if ($sermon->speaker) {
+          $speakers = $sermon->speaker;
+          foreach($speakers as $speaker) {
+            $fields = get_fields('term_'.$speaker->term_id);
+              foreach( $fields as $name => $value ) {
+                $speaker->$name = $value;
+              }
+          }
+        }
+
         $i++;
     }
 
@@ -153,6 +221,29 @@ function get_sermons_by_speaker($request) {
         $sermon->tag = get_the_terms($sermon->ID, 'ctc_sermon_tag');
         $post_date = date_create($sermon->post_date);
         $sermon->post_date_ISO_8601 = date_format($post_date, DATE_ISO8601);
+
+        // get custom fields from Series - Advanced Custom Fields
+        if ($sermon->series) {
+          $series = $sermon->series;
+          foreach($series as $item) {
+            $fields = get_fields('term_'.$item->term_id);
+              foreach( $fields as $name => $value ) {
+                $item->$name = $value;
+              }
+          }
+        }
+
+        // get custom fields from Speaker - Advanced Custom Fields
+        if ($sermon->speaker) {
+          $speakers = $sermon->speaker;
+          foreach($speakers as $speaker) {
+            $fields = get_fields('term_'.$speaker->term_id);
+              foreach( $fields as $name => $value ) {
+                $speaker->$name = $value;
+              }
+          }
+        }
+
         $i++;
     }
 

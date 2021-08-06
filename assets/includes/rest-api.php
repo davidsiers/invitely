@@ -27,7 +27,11 @@
     include(invitely_get_path('assets/includes/rest-routes/rest-invites.php'));
     include(invitely_get_path('assets/includes/rest-routes/rest-events.php'));
     include(invitely_get_path('assets/includes/rest-routes/rest-social-media-feed.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-encourage-posts.php')); 
     include(invitely_get_path('assets/includes/rest-routes/rest-prayer-requests.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-comments.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-next-step.php')); 
+    
 
     // https://tucsonbaptist.shelbynextchms.com/api/user/login?return_perms=true
 

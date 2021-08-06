@@ -8,6 +8,8 @@
 include(invitely_get_path('assets/includes/custom-post-types/invites.php'));
 include(invitely_get_path('assets/includes/custom-post-types/prayers.php'));
 include(invitely_get_path('assets/includes/custom-post-types/notifications.php'));
+include(invitely_get_path('assets/includes/custom-post-types/encouragements.php'));
+include(invitely_get_path('assets/includes/custom-post-types/next-steps.php'));
 
 function invitely_query_vars( $qvars ) {
     $qvars[] = 'token-id';
