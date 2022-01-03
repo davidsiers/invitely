@@ -20,7 +20,7 @@ $args = array(
     'posts_per_page' => 1,
 );
 
-$events = wp_get_object_terms( get_the_ID(), 'invite_event' );
+$events = wp_get_object_terms( $token, 'invite_event' );
 $event_id = $events[0]->term_id;
 $event_description = $events[0]->description;
 
@@ -71,17 +71,17 @@ while ( $loop->have_posts() ) {
 
             <div class="col-6 ticket-holder pl-3">
                 <strong>TICKET HOLDER</strong><br>
-                <span><?php the_field('first_name')?> <?php the_field('last_name')?></span>
+                <span><?php the_field('first_name', $token)?> <?php the_field('last_name', $token)?></span>
             </div> 
             <div class="col-6 event-time text-right pr-3">
                 <strong>WHEN</strong><br>
-                <span><? the_field('service_time')?></span>
+                <span><? the_field('service_time', $token)?></span>
             </div> 
 
 
             <div class="col-2 guest-number pl-3 my-3">
                 <strong>GUESTS</strong><br>
-                <span><?php the_field('number_of_guests')?></span>
+                <span><?php the_field('number_of_guests', $token)?></span>
             </div>
             <div class="col-10 event-location text-right pr-3 my-3">
                 <strong>LOCATION</strong><br>
@@ -106,14 +106,14 @@ while ( $loop->have_posts() ) {
         </div>  
         <div class="invited-by">
             <strong>INVITED BY</strong>
-            <div><? the_field('invited_by_first_name')?> <? the_field('invited_by_last_name')?><br>
-            <a href="tel:<? the_field('invited_by_phone')?>"><? the_field('invited_by_phone')?></a><br>
-            <a href="mailto:<? the_field('invited_by_email')?>"><? the_field('invited_by_email')?></a>
+            <div><? the_field('invited_by_first_name', $token)?> <? the_field('invited_by_last_name', $token)?><br>
+            <a href="tel:<? the_field('invited_by_phone', $token)?>"><? the_field('invited_by_phone', $token)?></a><br>
+            <a href="mailto:<? the_field('invited_by_email', $token)?>"><? the_field('invited_by_email', $token)?></a>
             </div>  
         </div>  
         <div class="event-time-back">
             <strong>WHEN</strong>
-            <div><? the_field('service_time')?></div>
+            <div><? the_field('service_time', $token)?></div>
         </div>  
         <div class="event-address">
             <strong>LOCATION</strong>
@@ -121,7 +121,7 @@ while ( $loop->have_posts() ) {
         </div>  
         <div class="small-group">
             <strong>GROWTH GROUP</strong>
-            <div><?php the_field('growth_group')?></div>
+            <div><?php the_field('growth_group', $token)?></div>
         </div>  
         <div class="event-phone">
             <strong>VENUE PHONE</strong>
@@ -137,7 +137,7 @@ while ( $loop->have_posts() ) {
 
     <script>
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "invite-<?php echo get_the_ID() ?>",
+            text: "invite-<?php echo $token ?>",
             width: 150,
             height: 150,
             colorDark : "#000000",

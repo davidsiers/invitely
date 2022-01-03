@@ -13,6 +13,12 @@ function custom_post_type_template($single) {
         }
     } 
 
+    // if ( $post->post_type == 'ctc_event' ) {
+    //     if ( file_exists( invitely_get_path('assets/templates/single-event.php') ) ) {
+    //         return invitely_get_path('assets/templates/single-event.php');
+    //     }
+    // } 
+
     return $single;
  
 }

@@ -16,6 +16,10 @@
             'methods' => 'GET',
             'callback' => 'send_mail',
         ) );
+        register_rest_route( 'invitely/v1', '/connect', array(
+            'methods' => 'POST',
+            'callback' => 'pos_connect',
+        ) );
     }); 
 
     include(invitely_get_path('assets/includes/rest-routes/rest-sermons.php'));
@@ -23,6 +27,11 @@
     include(invitely_get_path('assets/includes/rest-routes/rest-invites.php'));
     include(invitely_get_path('assets/includes/rest-routes/rest-events.php'));
     include(invitely_get_path('assets/includes/rest-routes/rest-social-media-feed.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-devotions.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-prayer-requests.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-comments.php')); 
+    include(invitely_get_path('assets/includes/rest-routes/rest-next-step.php')); 
+    
 
     // https://tucsonbaptist.shelbynextchms.com/api/user/login?return_perms=true
 
@@ -64,6 +73,34 @@
         ob_end_clean();
 
         wp_mail( $to, $subject, $body, $headers );
+    }
+
+    function pos_connect($req) {
+
+        $request = json_decode($req->get_body());
+        $FirstName = $request->FirstName;
+        $LastName = $request->LastName;
+        $Phone = $request->Phone;
+        $Drink = $request->Drink;
+        $Type = $request->Type;
+        $AddIn = $request->AddIn;
+        
+        $to = 'david@tucsonbaptist.com';
+        $subject = 'Connect';
+        $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <info@tucsonbaptist.com>');
+
+        $body = "<strong>First Name:</strong> $FirstName<br>
+        <strong>Last Name:</strong> $LastName<br>
+        <strong>Phone:</strong> $Phone<br>
+        <strong>Drink:</strong> $Drink<br>
+        <strong>Type:</strong> $Type<br>
+        <strong>Add-In:</strong> $AddIn<br>";
+
+        wp_mail( $to, $subject, $body, $headers );
+
+        $response = new WP_REST_Response($request);
+        $response->set_status(200);
+        return $response;
     }
     
 
