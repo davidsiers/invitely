@@ -38,7 +38,7 @@ function init_custom_post_prayers(){
     'menu_icon' => 'dashicons-cloud-upload',
     'hierarchical' => false,
     'menu_position' => null,
-    'supports' => array('title', 'editor', 'author')
+    'supports' => array('title', 'editor', 'author', 'thumbnail', 'comments')
   ); 
    
   register_post_type('prayers', $prayer_type_args);

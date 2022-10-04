@@ -73,6 +73,7 @@ function create_new_post_comment($request) {
   wp_insert_comment($comment_data);
   notify_post_author($data->post_ID, $data);
   notify_devotion_author($data->post_ID, $data);
+  notify_devos_email($data->post_ID, $data);
 
   $author_email = get_the_author_meta('', $data->post_ID);
 
@@ -90,7 +91,7 @@ function notify_post_author($postID, $data) {
     $subject = 'New Feedback';
     $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <info@tucsonbaptist.com>');
     
-    $body = 'A new prayer request has been submitted by '.$data->first_name.' '.$data->last_name.'.<br><br>'.
+    $body = 'A new comment has been submitted by '.$data->first_name.' '.$data->last_name.'.<br><br>'.
     '<strong>Post Title: </strong>'.$post->post_title.'<br>'.
     '<strong>First Name: </strong>'.$data->first_name.'<br>'.
     '<strong>Last Name: </strong>'.$data->last_name.'<br>'.
@@ -118,7 +119,25 @@ function notify_devotion_author($postID, $data) {
   $subject = 'New Feedback';
   $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <info@tucsonbaptist.com>');
   
-  $body = 'A new prayer request has been submitted by '.$data->first_name.' '.$data->last_name.'.<br><br>'.
+  $body = 'A new comment has been submitted by '.$data->first_name.' '.$data->last_name.'.<br><br>'.
+  '<strong>Post Title: </strong>'.$post->post_title.'<br>'.
+  '<strong>First Name: </strong>'.$data->first_name.'<br>'.
+  '<strong>Last Name: </strong>'.$data->last_name.'<br>'.
+  '<strong>Email: </strong>'.$data->email.'<br>'.
+  '<strong>Comment: </strong>'.$data->comment.'<br>';
+
+  wp_mail( $to, $subject, $body, $headers );
+
+}
+
+function notify_devos_email($postID, $data) {
+  $post = get_post($postID);
+
+  $to = 'devos@tucsonbaptist.com';
+  $subject = 'New Feedback';
+  $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <info@tucsonbaptist.com>');
+  
+  $body = 'A new comment has been submitted by '.$data->first_name.' '.$data->last_name.'.<br><br>'.
   '<strong>Post Title: </strong>'.$post->post_title.'<br>'.
   '<strong>First Name: </strong>'.$data->first_name.'<br>'.
   '<strong>Last Name: </strong>'.$data->last_name.'<br>'.

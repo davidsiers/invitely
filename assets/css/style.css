@@ -151,3 +151,160 @@ div[class*="event-info"] strong {
 .event-info div {
     width: 100%;
 }
+
+
+/*================= Devo ==================*/
+
+.devo-container {
+    max-width: 600px !important;
+    margin: 0 auto 100px;
+}
+
+.devotion-image {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.devotion-image img {
+    margin: 0 auto;
+    max-width: 100%;
+    border-radius: 15px;
+}
+
+.devotion-card {
+    background: rgb(113, 196, 149);
+    background: linear-gradient(35deg, rgba(113, 196, 149, 1) 0%, rgba(67, 110, 180, 1) 100%);
+    text-decoration: none;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.devotion-card a:hover {
+    text-decoration: none;
+}
+
+.devotion-card h5 {
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: capitalize !important;
+}
+
+.devotion-card p.passage {
+    color: #fff;
+    margin: 10px 0 8px 0px;
+    font-size: 18px;
+}
+
+.devotion-card p.reference {
+    color: #fff;
+    font-weight: 600;
+    margin: 10px 0 0 0px;
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 14px;
+}
+
+h5.devo-date {
+    border-bottom: 4px solid #a2ced7;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #a2ced7;
+    padding-bottom: 10px;
+    color: #929292;
+    text-transform: capitalize !important;
+}
+
+.devotional-post-content p {
+    font-size: 17px;
+}
+
+.devotion-quote {
+    border-left: 4px solid #2d81cd;
+    padding-left: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.devotion-quote .quote-text {
+    font-style: italic;
+    font-size: 17px;
+}
+
+.devotion-quote .quote-author {
+    font-weight: 600;
+    text-align: right;
+    font-size: 17px;
+}
+
+.devotional-author {
+    margin: 50px 0 50px 0;
+}
+
+.author-image {
+    text-align: center;
+}
+
+.author-image img {
+    max-width: 160px;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.author-title h4 {
+    text-transform: capitalize !important;
+    margin: 24px 0 0 0;
+    color: #656565;
+}
+
+.author-title p {
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #7d9cd2;
+}
+
+.response-button {
+    color: #fff !important;
+}
+
+
+/*================= Prayer ==================*/
+
+.prayer-container h5.card-title {
+    font-size: 24px;
+}
+
+.prayer-container h6.card-subtitle {
+    font-size: 16px;
+}
+
+.prayer-container p.card-text {
+    font-size: 16px;
+}
+
+.prayer-container a.btn {
+    font-size: 16px;
+    width: 100%;
+}
+
+.prayer-container p.mb-0.mt-0 {
+    font-size: 15px;
+}
+
+.prayer-container h5#prayerModallabel {
+    font-size: 20px;
+}
+
+.prayer-container button#sendprayer {
+    font-size: 16px;
+}
+
+.prayer-container button.btn.btn-secondary {
+    font-size: 16px;
+}
+
+.prayer-container .prayer-items {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

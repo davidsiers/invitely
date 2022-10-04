@@ -72,7 +72,8 @@ function get_prayer_requests($request) {
           'body' => array(
               'userID'   => $userID,
               'title'     => $title,
-              'body' => $body
+              'body' => $body,
+              'url' => '/tabs/discover/prayer'
           )
       )
   );
@@ -85,6 +86,7 @@ function prayed_for_prayer_requests_by_id($request) {
   $value = get_field( 'number_of_prayers', $post_id );
   $userID = get_field( 'uid', $post_id );
   $subject = get_field( 'subject', $post_id );
+  $email = get_field( 'email', $post_id );
   $firstname = $data->first_name;
   $lastname = $data->last_name;
 
@@ -97,10 +99,38 @@ function prayed_for_prayer_requests_by_id($request) {
   update_field( 'number_of_prayers', $value, $post_id );
 
   push_notify_user($userID, $firstname.' prayed for you!', $firstname.' '.$lastname.' prayed for your prayer about '.$subject.'.');
+  notify_of_being_prayed_for($data, $subject, $email);
+  create_new_prayer_comment($post_id, $data);
 
   $response = new WP_REST_Response('Prayed for '.$value.' times.');
   $response->set_status(200);
   return $response;
+}
+
+function create_new_prayer_comment($postID, $data) {
+  $current_user = wp_get_current_user();
+  $time = current_time('mysql');
+  $comment_data = array(
+      'comment_post_ID' => $postID,
+      'comment_author' => $data->first_name.' '.$data->last_name,
+      'comment_author_email' => $data->email,
+      'comment_content' => $data->first_name.' '.$data->last_name." prayed.",
+      'user_id' => $current_user->ID,
+      'comment_date' => $time,
+      'comment_approved' => 1,
+      'comment_type' => 'feedback'
+  );
+  wp_insert_comment($comment_data);
+}
+
+function notify_of_being_prayed_for($data, $prayerSubject, $prayerEmail) {
+  $to = $prayerEmail;
+  $subject = $data->first_name.' prayed for you!';
+  $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <prayer@tucsonbaptist.com>');
+  
+  $body = $data->first_name.' '.$data->last_name.' prayed for your request about '.$prayerSubject.'.';
+  
+  wp_mail( $to, $subject, $body, $headers );
 }
 
 function notify_about_new_prayer_request($data, $post_id) {
@@ -172,3 +202,56 @@ function get_prayer_requests_by_id($request) {
     $response->set_status(200);
     return $response;
 };
+
+function notify_of_being_published($prayerSubject, $prayerEmail) {
+  $to = $prayerEmail;
+  $subject = 'Your Prayer Request is Published';
+  $headers = array('Content-Type: text/html; charset=UTF-8', 'From: Tucson Baptist Church <prayer@tucsonbaptist.com>');
+  
+  $body = 'Your prayer request about '.$prayerSubject.' has been published on the Church App.';
+  
+  wp_mail( $to, $subject, $body, $headers );
+}
+
+function create_push_notification_on_prayer_publish($post) { 
+    if ( 'prayers' === $post->post_type ) {
+      // $topics = wp_get_post_terms( $post->ID, 'notification_group', array( 'fields' => 'slugs' ));
+      // $topic = $topics[0];
+      $topic = 'all';
+      $url = 'https://us-central1-tucson-baptist-church.cloudfunctions.net/pushToAllUsers';
+
+      $first_name = get_field( "first_name", $post );
+      $last_name = get_field( "last_name", $post );
+      $email = get_field( "email", $post );
+      $subject = get_field( "subject", $post );
+      $notify = get_field( "notify", $post );
+      $private_request = get_field( "private_request", $post );
+
+      $title = 'New Prayer Request';
+      $body = 'Open to pray for ' . $first_name . ' ' . $last_name . '.';
+
+      if ($private_request === false) {
+        notify_of_being_published($subject, $email);
+        if (!$topic) { $topic = 'all'; };
+
+        if ($notify === true) {
+
+            wp_remote_post(
+              $url,
+              array(
+                  'body' => array(
+                    'title' => $title,
+                    'body' => $body,
+                    'topic' => $topic,
+                    'url' => '/tabs/discover/prayer'
+                  )
+              )
+          );
+
+        };
+      }
+
+    }
+}
+
+add_action( 'draft_to_publish', 'create_push_notification_on_prayer_publish' );

@@ -6,6 +6,8 @@
 // No direct access
 if (! defined( 'ABSPATH' )) exit;
 
+get_template_part( invitely_include('assets/templates/header-full.php') );
+
 // Show time and description on two lines, if have time and description
 /* translators: time range (%1$s) and description (%2$s) for an event */
 $args['time_and_desc_format'] = __( '%1$s <div class="saved-event-time-description saved-entry-full-meta-second-line">%2$s</div>', 'saved' );
@@ -73,11 +75,21 @@ if (ctfw_has_content()) {
 
 	?>
 
+<main id="saved-content"<?php
+
+// Archive with entries - use contrasting background so white boxes show clearly
+if ( ctfw_has_loop_multiple() ) {
+	echo ' class="' . esc_attr( saved_alternating_bg_class( 'contrast' ) ) . '"';
+}
+
+?>>
+
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'saved-entry-full saved-event-full ' . $classes ); ?>>
 
 	<?php
 	// Load map section (also used on homepage and footer)
-	get_template_part( CTFW_THEME_PARTIAL_DIR . '/map-section' );
+	// get_template_part( CTFW_THEME_PARTIAL_DIR . '/map-section' );
+	get_template_part( invitely_include('assets/templates/saved/partials/map-section.php') );
 	?>
 
 	<header class="saved-entry-full-header">
@@ -210,7 +222,8 @@ if (ctfw_has_content()) {
 
 	<?php endif; ?>
 
-	<?php get_template_part( CTFW_THEME_PARTIAL_DIR . '/content-footer-full' ); // multipage nav, term lists, "Edit" button, etc. ?>
+	<!-- get_template_part( CTFW_THEME_PARTIAL_DIR . '/content-footer-full' ); -->
+	<?php get_template_part( invitely_include('assets/templates/saved/partials/content-footer-full.php') ); // multipage nav, term lists, "Edit" button, etc. ?>
 
 
 
@@ -233,3 +246,25 @@ if (ctfw_has_content()) {
 	</div>
 
 </article>
+
+<?php
+// loop-author.php shows bio below a blog post
+// (loop-header.php shows the same at top of author archive)
+get_template_part( CTFW_THEME_PARTIAL_DIR . '/loop-author' );
+?>
+
+<?php
+// loop-navigation.php shows the appropriate navigation at bottom
+get_template_part( CTFW_THEME_PARTIAL_DIR . '/loop-navigation' );
+?>
+
+<?php
+// comments.php lists comments when enabled (single posts only)
+comments_template();
+?>
+
+</div>
+
+</main>
+
+<?php     get_template_part( invitely_include('assets/templates/footer-full.php') ); ?>
